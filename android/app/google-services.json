@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "357720496412",
+    "project_id": "mekatronik-qr-management",
+    "storage_bucket": "mekatronik-qr-management.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357720496412:android:cab3ca22a1507f8cc3c2d9",
+        "android_client_info": {
+          "package_name": "com.example.mekatronik_qr_employee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQTsH9iigIjS8vPIZ5DyDypQT5dug1dXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357720496412:android:f8077554970d268fc3c2d9",
+        "android_client_info": {
+          "package_name": "com.example.mekatronik_qr_management"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQTsH9iigIjS8vPIZ5DyDypQT5dug1dXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357720496412:android:e7c90424460887bbc3c2d9",
+        "android_client_info": {
+          "package_name": "com.example.qr_employee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQTsH9iigIjS8vPIZ5DyDypQT5dug1dXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
