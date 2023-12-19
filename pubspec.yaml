@@ -7,9 +7,16 @@ environment:
   sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
+  audioplayers: ^5.2.1
+  cloud_firestore: ^4.13.6
+  curved_navigation_bar: ^1.0.3
+  firebase_auth: ^4.15.3
   firebase_core: ^2.24.2
   flutter:
     sdk: flutter
+  qr_code_scanner: ^1.0.1
+  shared_preferences: ^2.2.2
+  workmanager: ^0.5.2
 
 dev_dependencies:
   flutter_test:

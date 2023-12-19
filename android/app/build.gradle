@@ -45,7 +45,7 @@ android {
         applicationId "com.example.mekatronik_qr_management"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 20 // flutter.minSdkVersion eski haliydi, 20 Sonradan Eklendi
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
