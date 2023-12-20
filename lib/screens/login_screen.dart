@@ -15,7 +15,10 @@ class LoginScreen extends StatelessWidget {
 
   Future<bool> _checkCurrentUser() async {
     String? userId = SharedPref.getString(Constants.uidKey);
-    return userId != null;
+    String? userName = SharedPref.getString(Constants.userName);
+    String? userPassword = SharedPref.getString(Constants.userPassword);
+
+    return (userId != null && userName != null && userPassword != null);
   }
 
   @override
@@ -113,6 +116,8 @@ class LoginScreen extends StatelessWidget {
       return;
     }
     SharedPref.setString(Constants.uidKey, credential.user!.uid);
+    SharedPref.setString(Constants.userName, _usernameController.text);
+    SharedPref.setString(Constants.userPassword, _passwordController.text);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

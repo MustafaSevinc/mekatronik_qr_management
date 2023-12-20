@@ -1,6 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:mekatronik_qr_management/objects/local_data.dart';
+import 'package:mekatronik_qr_management/services/auth_service.dart';
 import 'package:mekatronik_qr_management/services/shared_pref.dart';
 import 'package:mekatronik_qr_management/services/store_service.dart';
 import 'package:mekatronik_qr_management/utils/constants.dart';
@@ -60,7 +61,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
 
   void _handleQRResult(String qrResult) {
     assetsAudioPlayer.open(
-      Audio("assets/sounds/beep.mp3"),
+      Audio(Constants.soundFilePath),
       autoStart: true,
     );
     setState(() {
@@ -79,20 +80,22 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   void _writeResultToFirestoreOrLocal(String qrResult) async {
     try {
       await _writeResultToFirestore(qrResult);
-      // Successfully written to Firestore, check for and process any pending local data
       await _processPendingLocalData();
     } catch (e) {
-      // Writing to Firestore failed, save result locally
       _saveToLocal(qrResult);
     }
   }
 
   Future<void> _writeResultToFirestore(String qrResult) async {
+    var day = DateTime.now().day;
+    var year = DateTime.now().year.toString();
+    var month = DateTime.now().month.toString();
+    var time = DateTime.now().toString().split(' ')[1];
     var data = {
-      'result': qrResult,
-      'timestamp': FieldValue.serverTimestamp(),
+      'time': time,
     };
-    StoreService.setData(path: 'qr/12.2023/15/$qrResult', data: data);
+    StoreService.setData(
+        path: '${widget.action}/${'$year.$month'}/$day/$qrResult', data: data);
   }
 
   void _saveToLocal(String qrResult) {
@@ -116,7 +119,21 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         await _writeResultToFirestore(result);
         localResults.remove(result);
       } catch (e) {
-        // Handle failure or try again later
+        print("FIRE BASE CONNECTİON DEDENIYORRRRR");
+        print("FIRE BASE CONNECTİON asdasdDEDENIYORRRRR");
+
+        print("FIRE BASE CONNECTİONasdsad DEDENIYORRRRR");
+
+        print("FIRE BASE CONNEasdsadCTİON DEDENIYORRRRR");
+        print("FIRE BASE CONNasdsadECTİON DEDENIYORRRRR");
+        print("FIRE BASE CONNEasdasdCTİON DEDENIYORRRRR");
+        print("FIRE BASE CONNECTİasdasdON DEDENIYORRRRR");
+        print("FIRE BASE CONNECasdasTİON DEDENIYORRRRR");
+        print("FIRE BASE CONNECTİONasdasd DEDENIYORRRRR");
+
+        await AuthService.signInWithEmailAndPassword(
+            SharedPref.getString(Constants.userName)!,
+            SharedPref.getString(Constants.userPassword)!);
       }
     }
 
