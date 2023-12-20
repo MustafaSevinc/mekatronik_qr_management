@@ -19,7 +19,7 @@ class QRScannerScreen extends StatefulWidget {
 
 class _QRScannerScreenState extends State<QRScannerScreen> {
   final GlobalKey _qrKey = GlobalKey(debugLabel: 'QR');
-  late final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer();
   late QRViewController _controller;
   late String _result = 'Scanning for QR';
 
@@ -55,7 +55,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   }
 
   void _handleQRResult(String qrResult) {
-    _audioPlayer.play(UrlSource('assets/sound/beep.mp3'));
+    _audioPlayer.play(DeviceFileSource(Constants.soundFilePath));
     setState(() {
       _result = qrResult;
       Future.delayed(Constants.qrReadDelay, () {
@@ -82,7 +82,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       'result': qrResult,
       'timestamp': FieldValue.serverTimestamp(),
     };
-    StoreService.setData(path: 'qr/12.2023/15', data: data);
+    StoreService.setData(path: 'qr/12.2023/15/$qrResult', data: data);
   }
 
   void _saveToLocal(String qrResult) {
