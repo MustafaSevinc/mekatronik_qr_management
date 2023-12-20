@@ -24,15 +24,16 @@ class _LoginScreenState extends State<LoginScreen> {
     _checkCurrentUser();
   }
 
-  void _checkCurrentUser() async {
+  void _checkCurrentUser() {
     String? userId = SharedPref.getString(Constants.uidKey);
+
     if (userId != null) {
       _navigateToHomeScreen();
     }
   }
 
   void _navigateToHomeScreen() {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const HomeScreen(),
@@ -117,12 +118,10 @@ class _LoginScreenState extends State<LoginScreen> {
       "${_usernameController.text}@mail.com",
       _passwordController.text,
     );
-
     if (credential == null) {
       _showSnackBar('Giriş Yapılamadı');
       return;
     }
-
     SharedPref.setString(Constants.uidKey, credential.user!.uid);
     _navigateToHomeScreen();
   }

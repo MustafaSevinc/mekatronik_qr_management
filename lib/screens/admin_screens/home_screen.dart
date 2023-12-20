@@ -3,7 +3,6 @@ import 'package:mekatronik_qr_management/screens/admin_screens/export_screens/ex
 import 'package:mekatronik_qr_management/screens/admin_screens/qr_op_screens/qr_op_main_screen.dart';
 import 'package:mekatronik_qr_management/screens/admin_screens/user_op_screens/user_op_main_screen.dart';
 import 'package:mekatronik_qr_management/screens/login_screen.dart';
-import 'package:mekatronik_qr_management/services/auth_service.dart';
 import 'package:mekatronik_qr_management/services/shared_pref.dart';
 import 'package:mekatronik_qr_management/utils/custom_colors.dart';
 import 'package:mekatronik_qr_management/widgets/bottom_nav_bar.dart';
@@ -61,13 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onLogoutPressed() async {
-    await AuthService.signOut();
     SharedPref.clear();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
+    Navigator.pop(context);
   }
 }
