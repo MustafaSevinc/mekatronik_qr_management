@@ -119,18 +119,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         await _writeResultToFirestore(result);
         localResults.remove(result);
       } catch (e) {
-        print("FIRE BASE CONNECTİON DEDENIYORRRRR");
-        print("FIRE BASE CONNECTİON asdasdDEDENIYORRRRR");
-
-        print("FIRE BASE CONNECTİONasdsad DEDENIYORRRRR");
-
-        print("FIRE BASE CONNEasdsadCTİON DEDENIYORRRRR");
-        print("FIRE BASE CONNasdsadECTİON DEDENIYORRRRR");
-        print("FIRE BASE CONNEasdasdCTİON DEDENIYORRRRR");
-        print("FIRE BASE CONNECTİasdasdON DEDENIYORRRRR");
-        print("FIRE BASE CONNECasdasTİON DEDENIYORRRRR");
-        print("FIRE BASE CONNECTİONasdasd DEDENIYORRRRR");
-
         await AuthService.signInWithEmailAndPassword(
             SharedPref.getString(Constants.userName)!,
             SharedPref.getString(Constants.userPassword)!);

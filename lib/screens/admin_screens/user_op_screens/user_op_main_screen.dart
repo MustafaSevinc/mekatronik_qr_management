@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mekatronik_qr_management/screens/admin_screens/user_op_screens/checklist_employee_screen.dart';
 import 'package:mekatronik_qr_management/screens/admin_screens/user_op_screens/register_screen.dart';
 import 'package:mekatronik_qr_management/screens/admin_screens/user_op_screens/user_list_screen.dart';
 
@@ -41,7 +42,18 @@ class _UserOpMainScreenState extends State<UserOpMainScreen> {
               );
             },
             buttonText: 'Listele',
-          )
+          ),
+          const SizedBox(height: 50),
+          CustomElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ChecklistEmployee()),
+              );
+            },
+            buttonText: 'Savunma',
+          ),
         ],
       ),
     );

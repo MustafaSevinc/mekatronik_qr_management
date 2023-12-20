@@ -12,9 +12,9 @@ class QROpMainScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildButton(context, "Enter"),
-            _buildButton(context, "Leave"),
-            _buildButton(context, "Launch"),
+            _buildButton(context, "giris"),
+            _buildButton(context, "cikis"),
+            _buildButton(context, "yemek"),
           ],
         ),
       ),

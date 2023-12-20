@@ -9,12 +9,10 @@ class StoreService {
     bool merge = false,
   }) async {
     final DocumentReference<Map<String, dynamic>> ref = _db.doc(path);
-    print('$path: $data');
     await ref.set(data, SetOptions(merge: merge));
   }
 
   static CollectionReference({required String path}) {
-    final DocumentReference<Map<String, dynamic>> ref = _db.doc(path);
-    return ref.get();
+    return _db.collection(path).get();
   }
 }
