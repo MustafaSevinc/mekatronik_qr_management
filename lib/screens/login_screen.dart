@@ -8,7 +8,7 @@ import '../../utils/custom_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    String logoImage = "assets/img/mekatroniklogo.png";
+    String logoImage = "assets/images/mekatroniklogo.png";
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomColors.appBarColor,

@@ -8,7 +8,7 @@ import 'package:mekatronik_qr_management/utils/custom_colors.dart';
 import 'package:mekatronik_qr_management/widgets/bottom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

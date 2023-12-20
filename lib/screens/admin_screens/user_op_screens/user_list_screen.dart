@@ -165,18 +165,18 @@ class _UserListState extends State<UserList> {
                   db.doc(item['uid']).delete();
                   Navigator.of(context).pop();
                 },
-                child: const Text('Sil'),
                 style: TextButton.styleFrom(
                   backgroundColor: CustomColors.buttonColor,
-                )),
+                ),
+                child: const Text('Sil')),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Kapat'),
               style: TextButton.styleFrom(
                 backgroundColor: CustomColors.buttonColor,
               ),
+              child: const Text('Kapat'),
             ),
           ],
         );
