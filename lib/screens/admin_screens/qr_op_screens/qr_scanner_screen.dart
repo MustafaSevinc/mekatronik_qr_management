@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:mekatronik_qr_management/objects/local_data.dart';
 import 'package:mekatronik_qr_management/services/shared_pref.dart';
@@ -5,7 +6,6 @@ import 'package:mekatronik_qr_management/services/store_service.dart';
 import 'package:mekatronik_qr_management/utils/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart'
     show BarcodeFormat, QRViewController, QRView;
-import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class QRScannerScreen extends StatefulWidget {
@@ -18,8 +18,8 @@ class QRScannerScreen extends StatefulWidget {
 }
 
 class _QRScannerScreenState extends State<QRScannerScreen> {
+  final AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
   final GlobalKey _qrKey = GlobalKey(debugLabel: 'QR');
-  final AudioPlayer _audioPlayer = AudioPlayer();
   late QRViewController _controller;
   late String _result = 'Scanning for QR';
 
@@ -55,14 +55,19 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   }
 
   void _handleQRResult(String qrResult) {
-    _audioPlayer.play(DeviceFileSource(Constants.soundFilePath));
+    assetsAudioPlayer.open(
+      Audio("assets/sounds/beep.mp3"),
+      autoStart: true,
+    );
     setState(() {
       _result = qrResult;
-      Future.delayed(Constants.qrReadDelay, () {
+    });
+
+    Future.delayed(Constants.qrReadDelay, () {
+      setState(() {
         _result = 'Scanning for QR';
       });
     });
-
     _writeResultToFirestoreOrLocal(qrResult);
   }
 
@@ -116,7 +121,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   @override
   void dispose() {
     _controller.dispose();
-    _audioPlayer.dispose();
     super.dispose();
   }
 }
