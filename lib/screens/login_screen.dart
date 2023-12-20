@@ -11,6 +11,8 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  LoginScreen({super.key});
+
   Future<bool> _checkCurrentUser() async {
     String? userId = SharedPref.getString(Constants.uidKey);
     return userId != null;
@@ -21,11 +23,7 @@ class LoginScreen extends StatelessWidget {
     return FutureBuilder<bool>(
       future: _checkCurrentUser(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
+        if (snapshot.hasError) {
           return Scaffold(
             body: Center(child: Text('Error: ${snapshot.error}')),
           );
