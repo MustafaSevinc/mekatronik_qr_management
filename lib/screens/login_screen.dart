@@ -42,46 +42,75 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    String logoImage = "assets/images/mekatroniklogo.png";
-    return Scaffold(
-      appBar: AppBar(
+    return Container(
+    decoration: const BoxDecoration(
+    image: DecorationImage(
+        image: AssetImage('assets/images/mekatroniklogo.png'),
+      fit: BoxFit.fitWidth,
+    )
+    ),
+      child: Scaffold(
+        appBar: AppBar(
         backgroundColor: CustomColors.appBarColor,
         title: const Text('Giriş Yap'),
-      ),
-      backgroundColor: CustomColors.textButtonColor,
-      body: Padding(
-        padding: const EdgeInsets.all(36),
-        child: Form(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              _buildImageContainer(logoImage, height),
-              const SizedBox(
-                height: 50,
-              ),
-              TextFormField(
-                controller: _usernameController,
-                decoration: const InputDecoration(labelText: 'Kullanıcı Adı'),
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Şifre'),
-                obscureText: true,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomElevatedButton(
-                onPressed: _login,
-                buttonText: 'Giriş Yap',
-              ),
-            ],
+    ),
+    backgroundColor: CustomColors.textButtonColor,
+    body: Padding(
+    padding: const EdgeInsets.all(46),
+    child: Form(
+    child: Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: <Widget>[
+      Expanded(
+        flex: 4,
+        child: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/mekatroniklogo.png'),
+                fit: BoxFit.fitWidth,
+              )
           ),
-        ),
-      ),
-    );
+        ),),
+    Expanded(
+      flex: 1,
+    child: Container(
+    child: TextFormField(
+    controller: _usernameController,
+    decoration: const InputDecoration(labelText: 'Kullanıcı Adı'),
+    ),
+    ),),
+    Expanded(
+      flex: 1,
+    child: Container(
+    child: TextFormField(
+    controller: _passwordController,
+    decoration: const InputDecoration(labelText: 'Şifre'),
+    obscureText: true,
+    ),
+    ),),
+    SizedBox(
+      height: 10,
+    ),
+    Expanded(
+      flex: 1,
+    child: Container(
+    child: CustomElevatedButton(
+    onPressed: _login,
+    buttonText: 'Giriş Yap',
+    ),
+    ),
+    ),
+      Expanded(
+        flex: 1,
+        child: Container(
+          child: SizedBox(
+            height: 20,
+          ),
+        ),),
+    ],),),),),);
   }
+
+
 
   Future<void> _login() async {
     UserCredential? credential = await AuthService.signInWithEmailAndPassword(
@@ -102,18 +131,6 @@ class _LoginScreenState extends State<LoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-      ),
-    );
-  }
-
-  Container _buildImageContainer(String logoImage, double height) {
-    return Container(
-      height: height * .13,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage(logoImage),
-        ),
       ),
     );
   }
