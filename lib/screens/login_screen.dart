@@ -36,7 +36,7 @@ class LoginScreen extends StatelessWidget {
               ),
             );
           });
-          return Scaffold(
+          return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         } else {
@@ -78,29 +78,23 @@ class LoginScreen extends StatelessWidget {
               ),
               Expanded(
                 flex: 1,
-                child: Container(
-                  child: TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(labelText: 'Şifre'),
-                    obscureText: true,
-                  ),
+                child: TextFormField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(labelText: 'Şifre'),
+                  obscureText: true,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Expanded(
                 flex: 1,
-                child: Container(
-                  child: CustomElevatedButton(
-                    onPressed: () => _login(context),
-                    buttonText: 'Giriş Yap',
-                  ),
+                child: CustomElevatedButton(
+                  onPressed: () => _login(context),
+                  buttonText: 'Giriş Yap',
                 ),
               ),
-              Expanded(
+              const Expanded(
                 flex: 1,
-                child: Container(
-                  child: SizedBox(height: 20),
-                ),
+                child: SizedBox(height: 20),
               ),
             ],
           ),
