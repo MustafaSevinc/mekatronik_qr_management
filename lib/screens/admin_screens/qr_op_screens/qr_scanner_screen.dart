@@ -22,6 +22,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   final GlobalKey _qrKey = GlobalKey(debugLabel: 'QR');
   late QRViewController _controller;
   late String _result = 'Scanning for QR';
+  bool isProcessing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +49,11 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   void _onQRViewCreated(QRViewController controller) {
     _controller = controller;
     _controller.scannedDataStream.listen((scanData) {
-      if (scanData.format == BarcodeFormat.qrcode) {
+      if (!isProcessing && scanData.format == BarcodeFormat.qrcode) {
         _handleQRResult(scanData.code!);
+        setState(() {
+          isProcessing = true;
+        });
       }
     });
   }
@@ -65,9 +69,10 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
 
     Future.delayed(Constants.qrReadDelay, () {
       setState(() {
-        _result = 'Scanning for QR';
+        isProcessing = false;
       });
     });
+
     _writeResultToFirestoreOrLocal(qrResult);
   }
 
