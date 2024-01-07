@@ -18,7 +18,7 @@ Future<void> popUp(BuildContext context, String header, String metin) async {
           TextButton(
             child: const Text('Devam Et'),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.pop(context);
             },
           ),
         ],

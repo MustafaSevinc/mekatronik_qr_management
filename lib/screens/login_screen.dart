@@ -7,11 +7,19 @@ import 'package:mekatronik_qr_management/utils/constants.dart';
 import '../../utils/custom_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
 
-class LoginScreen extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
-  LoginScreen({super.key});
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _isLoggingIn = false;
+
+  final TextEditingController _usernameController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
 
   Future<bool> _checkCurrentUser() async {
     String? userId = SharedPref.getString(Constants.uidKey);
@@ -52,53 +60,42 @@ class LoginScreen extends StatelessWidget {
   Scaffold _buildLoginScreen(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.textButtonColor,
-      body: Padding(
-        padding: const EdgeInsets.all(46),
-        child: Form(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Expanded(
-                flex: 4,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/mekatroniklogo.png'),
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
+              Image.asset(
+                Constants.logo,
+                fit: BoxFit.fitWidth,
+                height: 150.0,
+              ),
+              SizedBox(height: 80.0),
+              TextFormField(
+                controller: _usernameController,
+                decoration: InputDecoration(
+                  labelText: 'Kullanıcı Adı',
+                  border: OutlineInputBorder(),
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  child: TextFormField(
-                    controller: _usernameController,
-                    decoration:
-                        const InputDecoration(labelText: 'Kullanıcı Adı'),
-                  ),
+              SizedBox(height: 20.0),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Şifre',
+                  border: OutlineInputBorder(),
                 ),
+                obscureText: true,
               ),
-              Expanded(
-                flex: 1,
-                child: TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Şifre'),
-                  obscureText: true,
-                ),
+              SizedBox(height: 20.0),
+              CustomElevatedButton(
+                onPressed: () => _login(context),
+                buttonText: 'Giriş Yap',
+                child: _isLoggingIn ? const CircularProgressIndicator() : null,
               ),
-              const SizedBox(height: 10),
-              Expanded(
-                flex: 1,
-                child: CustomElevatedButton(
-                  onPressed: () => _login(context),
-                  buttonText: 'Giriş Yap',
-                ),
-              ),
-              const Expanded(
-                flex: 1,
-                child: SizedBox(height: 20),
-              ),
+              SizedBox(height: 20.0),
             ],
           ),
         ),
@@ -107,10 +104,18 @@ class LoginScreen extends StatelessWidget {
   }
 
   Future<void> _login(BuildContext context) async {
+    setState(() {
+      _isLoggingIn = true;
+    });
+
     UserCredential? credential = await AuthService.signInWithEmailAndPassword(
       "${_usernameController.text}@mail.com",
       _passwordController.text,
     );
+    setState(() {
+      _isLoggingIn = false;
+    });
+
     if (credential == null) {
       _showSnackBar(context, 'Giriş Yapılamadı');
       return;

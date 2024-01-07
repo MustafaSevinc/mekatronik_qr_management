@@ -12,7 +12,13 @@ class StoreService {
     await ref.set(data, SetOptions(merge: merge));
   }
 
-  static CollectionReference({required String path}) {
-    return _db.collection(path).get();
+  static CollectionReference collection({required String path}) {
+    return _db.collection(path);
+  }
+
+  static Future<QuerySnapshot<Map<String, dynamic>>> collectionReference({
+    required String path,
+  }) async {
+    return await _db.collection(path).get();
   }
 }

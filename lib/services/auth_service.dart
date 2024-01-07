@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mekatronik_qr_management/services/store_service.dart';
 
 class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -59,19 +60,32 @@ class AuthService {
     }
   }
 
-  static Future<User?> registerWithEmailAndPassword(
-      String email, String password, String name, String phone) async {
+  static Future<User?> registerWithEmailAndPassword(String id, String email,
+      String password, String name, String sName, String phone) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
-        email: email,
+        email: "$id@mail.com",
         password: password,
       );
-
-      await updateProfile(name, '');
+      Map<String, dynamic> data = {
+        'id': id,
+        'name': name,
+        'surname': sName,
+        'phone': phone,
+        'email': email,
+        'password': password,
+      };
+      StoreService.setData(
+          path: 'users/${userCredential.user!.uid}', data: data);
 
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
-      print('Error registering user: ${e.message}');
+      if (e.code == 'email-already-in-use') {
+        print('Error registering user: ${e.message}');
+        // Handle the case where the email is already registered
+      } else {
+        print('Error registering user: ${e.message}');
+      }
       return null;
     }
   }

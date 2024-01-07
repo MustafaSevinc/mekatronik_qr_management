@@ -7,7 +7,6 @@ import 'package:mekatronik_qr_management/services/store_service.dart';
 import 'package:mekatronik_qr_management/utils/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart'
     show BarcodeFormat, QRViewController, QRView;
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class QRScannerScreen extends StatefulWidget {
   final String action;
@@ -92,10 +91,10 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     var month = DateTime.now().month.toString();
     var time = DateTime.now().toString().split(' ')[1];
     var data = {
-      'time': time,
+      widget.action: time,
     };
     StoreService.setData(
-        path: '${widget.action}/${'$year.$month'}/$day/$qrResult', data: data);
+        path: 'puantaj/${'$year.$month'}/$day/$qrResult', data: data);
   }
 
   void _saveToLocal(String qrResult) {

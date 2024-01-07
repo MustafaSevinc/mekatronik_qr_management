@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: CustomColors.appBarColor,
       ),
-      home: LoginScreen(),
+      home: const LoginScreen(),
     );
   }
 }
