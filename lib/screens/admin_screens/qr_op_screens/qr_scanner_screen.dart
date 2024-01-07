@@ -1,4 +1,5 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mekatronik_qr_management/objects/local_data.dart';
 import 'package:mekatronik_qr_management/services/auth_service.dart';
@@ -23,6 +24,13 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   late QRViewController _controller;
   late String _result = 'Scanning for QR';
   bool isProcessing = false;
+  Map<String, dynamic> entryList = {'users': []};
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchEntry();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,15 +98,43 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     var year = DateTime.now().year.toString();
     var month = DateTime.now().month.toString();
     var time = DateTime.now().toString().split(' ')[1];
-    var data = {
-      widget.action: time,
-    };
+    if (widget.action == "yemek") {
+      Map data = {
+        'time': time,
+      };
+      StoreService.setData(path: 'yemek/${'$day.$month.$year'}', data: data);
+    }
+
+    bool isExist = false;
+    for (Map<String, dynamic> entry in entryList['users']) {
+      if (entry['uid'] == qrResult) {
+        isExist = true;
+        if (entry['cikis'].length >= entry['giris'].length &&
+            widget.action == 'giris') {
+          entry['giris'].add(time);
+        } else if (entry['cikis'].length < entry['giris'].length &&
+            widget.action == 'cikis') {
+          entry['cikis'].add(time);
+        }
+      }
+    }
+    if (!isExist && widget.action == 'giris') {
+      entryList['users'].add({
+        'uid': qrResult,
+        'giris': [time],
+        'cikis': [],
+      });
+      debugPrint("-----------------------------------------------" +
+          entryList.toString() +
+          'puantaj/${'$day.$month.$year'}/$qrResult');
+    }
     StoreService.setData(
-        path: 'puantaj/${'$year.$month'}/$day/$qrResult', data: data);
+        path: 'puantaj/${'$day.$month.$year'}', data: entryList);
   }
 
   void _saveToLocal(String qrResult) {
-    final localResults = SharedPref.getLocalDataList(Constants.localResultsKey);
+    final List<LocalData> localResults =
+        SharedPref.getLocalDataList(Constants.localResultsKey);
     final LocalData localData = LocalData(
       uid: qrResult,
       action: widget.action,
@@ -110,12 +146,11 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   }
 
   Future<void> _processPendingLocalData() async {
-    final localResults =
-        SharedPref.getStringList(Constants.localResultsKey) ?? [];
+    final localResults = SharedPref.getLocalDataList(Constants.localResultsKey);
 
     for (final result in localResults) {
       try {
-        await _writeResultToFirestore(result);
+        await _writeResultToFirestore(result.uid);
         localResults.remove(result);
       } catch (e) {
         await AuthService.signInWithEmailAndPassword(
@@ -124,12 +159,31 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       }
     }
 
-    SharedPref.setStringList(Constants.localResultsKey, localResults);
+    SharedPref.setLocalDataList(Constants.localResultsKey, localResults);
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  _fetchEntry() async {
+    DateTime now = DateTime.now();
+    String formattedDate =
+        "${now.day.toString().padLeft(2, '0')}.${now.month.toString().padLeft(2, '0')}.${now.year.toString()}";
+    DocumentSnapshot puantajSnapshot =
+        await StoreService.collection(path: 'puantaj').doc(formattedDate).get();
+    debugPrint("313131313" + puantajSnapshot.data().toString());
+    //BURANIN ALTINDA SIKINTI VAR
+
+    Map<String, dynamic> data = puantajSnapshot.data() as Map<String, dynamic>;
+    List<dynamic> usersArray = (data['users'] as List<dynamic>);
+    debugPrint("313131313" + entryList.toString());
+
+    setState(() {
+      entryList['users'] = usersArray;
+      debugPrint("313131313" + entryList.toString());
+    });
   }
 }

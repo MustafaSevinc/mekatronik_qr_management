@@ -6,6 +6,7 @@ import 'package:mekatronik_qr_management/services/store_service.dart';
 import 'package:mekatronik_qr_management/utils/constants.dart';
 import 'package:mekatronik_qr_management/utils/custom_colors.dart';
 import 'package:mekatronik_qr_management/widgets/custom_icon_button.dart';
+import 'package:mekatronik_qr_management/widgets/popup.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import 'package:excel/excel.dart';
 
@@ -44,7 +45,10 @@ class _ExortXlsxScreenState extends State<ExortXlsxScreen> {
     );
   }
 
-  Future<void> _onExportPressed() async {}
+  Future<void> _onExportPressed() async {
+    popUp(context, "UNDER DEVELOPMENT",
+        "Bu özellik henüz geliştirilme aşamasındadır.");
+  }
 /*
   Future<void> _onExportPressed() async {
     final Excel excel = Excel.createExcel();

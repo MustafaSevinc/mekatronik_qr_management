@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:mekatronik_qr_management/services/store_service.dart';
 import 'package:mekatronik_qr_management/utils/constants.dart';
 import 'package:mekatronik_qr_management/utils/custom_colors.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
-import 'package:mekatronik_qr_management/widgets/popup.dart';
 
 class ChecklistEmployee extends StatefulWidget {
   const ChecklistEmployee({Key? key})
@@ -53,11 +51,24 @@ class _ChecklistEmployeeState extends State<ChecklistEmployee> {
     DateTime now = DateTime.now();
     String formattedDate =
         "${now.day.toString().padLeft(2, '0')}.${now.month.toString().padLeft(2, '0')}.${now.year.toString()}";
-    DocumentSnapshot puantajSnapshot =
-        await StoreService.collection(path: 'puantaj').doc(formattedDate).get();
+    DocumentSnapshot<Map<String, dynamic>> puantajSnapshot =
+        await StoreService.collection(path: 'puantaj').doc(formattedDate).get()
+            as DocumentSnapshot<Map<String, dynamic>>;
 
-    Map<String, dynamic> data = puantajSnapshot.data() as Map<String, dynamic>;
+    if (!puantajSnapshot.exists) {
+      print('Belirtilen tarih için doküman bulunamadı.');
+      return; // ya da uygun bir hata işleme mekanizması kullanabilirsiniz.
+    }
+
+    var data = puantajSnapshot.data() as Map<String, dynamic>;
+
+    if (!data.containsKey('users')) {
+      print('Doküman verisi eksik veya yanlış.');
+      return; // ya da uygun bir hata işleme mekanizması kullanabilirsiniz.
+    }
+
     List<dynamic> usersArray = (data['users'] as List<dynamic>);
+
     setState(() {
       entryList = usersArray;
     });
@@ -123,50 +134,38 @@ class _ChecklistEmployeeState extends State<ChecklistEmployee> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _performActionsOnSelectedItems();
+          loginService("", "");
         },
         child: const Icon(Icons.send_rounded),
       ),
     );
   }
 
-  void _performActionsOnSelectedItems() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String username = Constants.mailServiceMail;
-    String password = Constants.mailServicePassword;
-
-    final smtpServer = gmail(username, password);
+  Future<dynamic> loginService(String email, String password) async {
+    // Diğer kodlar
     List mails = [];
     for (var item in selectedItems) {
       if (item.get('email') != null && item.get('email') != 'empty@mail.com') {
         mails.add(item.get('email'));
       }
     }
-    debugPrint(mails.toString());
-    // Create our message.
-    final message = Message()
-      ..from = Address(username, 'anonim savunmaGonderici')
-      ..recipients.addAll(mails)
-      ..subject = 'Savunma Maili ${DateTime.now()}'
-      ..text = Constants.savunmaMailText;
-
-    try {
-      final sendReport = await send(message, smtpServer);
-      print('Message sent: ' + sendReport.toString());
-      setState(() {
-        _isLoading = false;
-      });
-      popUp(context, "İşlem Başarılı", "Savunma Mailleri Başarıyla Gönderildi");
-    } on MailerException catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      popUp(context, "İşlem Başarısız", "Savunma Mailleri Gönderilemedi.");
-      print(e);
-      for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
+    // Tam URL'yi oluştur
+    for (String mail in mails) {
+      String loginUrl =
+          "${Constants.loginUrl}?email=$mail&title=${Constants.savunmaMailTitle}&icerik=${Constants.savunmaMailText}";
+      // API isteğini gerçekleştir
+      http.Response response = await http.get(Uri.parse(loginUrl));
+      String responseBody = response.body;
+      print(responseBody);
+      try {
+        // Başarılı cevabı al ve işle
+        if (response.statusCode == 200) {
+          // Veriyi işleme kodları
+        } else {
+          // Başarısız durumla ilgili işlemler
+        }
+      } catch (e) {
+        // Hata durumu işlemleri
       }
     }
   }

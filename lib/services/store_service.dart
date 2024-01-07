@@ -5,7 +5,7 @@ class StoreService {
 
   static Future<void> setData({
     required String path,
-    required Map<String, dynamic> data,
+    required dynamic data,
     bool merge = false,
   }) async {
     final DocumentReference<Map<String, dynamic>> ref = _db.doc(path);

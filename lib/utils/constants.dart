@@ -8,8 +8,10 @@ class Constants {
   static const puantajFilePath = "assets/tables/puantaj.xlsx";
   static const excelFileName = "Excel Ciktisi";
   static const logo = 'assets/images/mekatroniklogo.png';
+  static const loginUrl = 'https://noiqr.com.tr/mustafa-sevinc/mail.php';
   static const mailServiceMail = 'anonimsavunmagonderici@gmail.com';
   static const mailServicePassword = 'anonimsavunma123';
+  static const savunmaMailTitle = 'Savunma Maili';
   static const savunmaMailText =
       'Gün içerisinde işe gelmediğiniz için savunma maili gönderilmiştir. Lütfen bir sonraki gün işe gelmeyi unutmayınız.';
 }
