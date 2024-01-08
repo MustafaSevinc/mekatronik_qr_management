@@ -6,6 +6,7 @@ import 'package:mekatronik_qr_management/services/auth_service.dart';
 import 'package:mekatronik_qr_management/services/shared_pref.dart';
 import 'package:mekatronik_qr_management/services/store_service.dart';
 import 'package:mekatronik_qr_management/utils/constants.dart';
+import 'package:mekatronik_qr_management/widgets/popup.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart'
     show BarcodeFormat, QRViewController, QRView;
 
@@ -94,15 +95,15 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   }
 
   Future<void> _writeResultToFirestore(String qrResult) async {
-    var day = DateTime.now().day;
-    var year = DateTime.now().year.toString();
-    var month = DateTime.now().month.toString();
     var time = DateTime.now().toString().split(' ')[1];
+    DateTime now = DateTime.now();
+    String date =
+        "${now.day.toString().padLeft(2, '0')}.${now.month.toString().padLeft(2, '0')}.${now.year.toString()}";
     if (widget.action == "yemek") {
       Map data = {
         'time': time,
       };
-      StoreService.setData(path: 'yemek/${'$day.$month.$year'}', data: data);
+      StoreService.setData(path: 'yemek/$date}', data: data);
     }
 
     bool isExist = false;
@@ -115,6 +116,9 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         } else if (entry['cikis'].length < entry['giris'].length &&
             widget.action == 'cikis') {
           entry['cikis'].add(time);
+        } else {
+          popUp(context, "Giriş Çıkış Uyuşmazlığı",
+              "${entry['cikis'].length} Kez Çıkış, ${entry['giris'].length} Kez Giriş Yapılmış");
         }
       }
     }
@@ -124,12 +128,11 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         'giris': [time],
         'cikis': [],
       });
-      debugPrint("-----------------------------------------------" +
-          entryList.toString() +
-          'puantaj/${'$day.$month.$year'}/$qrResult');
+    } else if (!isExist && widget.action == 'cikis') {
+      popUp(context, "Çalışan Giriş Yapmamış", "Önce Giriş Yapınız");
+      return;
     }
-    StoreService.setData(
-        path: 'puantaj/${'$day.$month.$year'}', data: entryList);
+    StoreService.setData(path: 'puantaj/$date', data: entryList);
   }
 
   void _saveToLocal(String qrResult) {
@@ -172,18 +175,25 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     DateTime now = DateTime.now();
     String formattedDate =
         "${now.day.toString().padLeft(2, '0')}.${now.month.toString().padLeft(2, '0')}.${now.year.toString()}";
-    DocumentSnapshot puantajSnapshot =
-        await StoreService.collection(path: 'puantaj').doc(formattedDate).get();
-    debugPrint("313131313" + puantajSnapshot.data().toString());
-    //BURANIN ALTINDA SIKINTI VAR
+    print(formattedDate);
+    DocumentSnapshot<Map<String, dynamic>> puantajSnapshot =
+        await StoreService.collection(path: 'puantaj').doc(formattedDate).get()
+            as DocumentSnapshot<Map<String, dynamic>>;
+    if (!puantajSnapshot.exists) {
+      print('Belirtilen tarih için doküman bulunamadı.');
+      return; // ya da uygun bir hata işleme mekanizması kullanabilirsiniz.
+    }
 
-    Map<String, dynamic> data = puantajSnapshot.data() as Map<String, dynamic>;
+    var data = puantajSnapshot.data() as Map<String, dynamic>;
+
+    if (!data.containsKey('users')) {
+      print('Doküman verisi eksik veya yanlış.');
+      return; // ya da uygun bir hata işleme mekanizması kullanabilirsiniz.
+    }
+
     List<dynamic> usersArray = (data['users'] as List<dynamic>);
-    debugPrint("313131313" + entryList.toString());
-
     setState(() {
       entryList['users'] = usersArray;
-      debugPrint("313131313" + entryList.toString());
     });
   }
 }

@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mekatronik_qr_management/services/store_service.dart';
 import 'package:mekatronik_qr_management/utils/constants.dart';
 import 'package:mekatronik_qr_management/utils/custom_colors.dart';
+import 'package:mekatronik_qr_management/widgets/popup.dart';
 
 class ChecklistEmployee extends StatefulWidget {
   const ChecklistEmployee({Key? key})
@@ -51,6 +52,7 @@ class _ChecklistEmployeeState extends State<ChecklistEmployee> {
     DateTime now = DateTime.now();
     String formattedDate =
         "${now.day.toString().padLeft(2, '0')}.${now.month.toString().padLeft(2, '0')}.${now.year.toString()}";
+    print(formattedDate);
     DocumentSnapshot<Map<String, dynamic>> puantajSnapshot =
         await StoreService.collection(path: 'puantaj').doc(formattedDate).get()
             as DocumentSnapshot<Map<String, dynamic>>;
@@ -68,7 +70,6 @@ class _ChecklistEmployeeState extends State<ChecklistEmployee> {
     }
 
     List<dynamic> usersArray = (data['users'] as List<dynamic>);
-
     setState(() {
       entryList = usersArray;
     });
@@ -79,6 +80,7 @@ class _ChecklistEmployeeState extends State<ChecklistEmployee> {
     for (var i = 0; i < employeeList.length; i++) {
       isExist = false;
       for (var j = 0; j < entryList.length; j++) {
+        print(entryList[j]['uid']);
         if (employeeList[i].id == entryList[j]['uid']) {
           isExist = true;
         }
@@ -99,7 +101,7 @@ class _ChecklistEmployeeState extends State<ChecklistEmployee> {
           backgroundColor: CustomColors.appBarColor,
         ),
         backgroundColor: CustomColors.appBarBodyColor,
-        body: Center(
+        body: const Center(
           child: CircularProgressIndicator(),
         ),
       );
@@ -142,31 +144,34 @@ class _ChecklistEmployeeState extends State<ChecklistEmployee> {
   }
 
   Future<dynamic> loginService(String email, String password) async {
-    // Diğer kodlar
+    setState(() {
+      _isLoading = true;
+    });
     List mails = [];
     for (var item in selectedItems) {
       if (item.get('email') != null && item.get('email') != 'empty@mail.com') {
         mails.add(item.get('email'));
       }
     }
-    // Tam URL'yi oluştur
     for (String mail in mails) {
+      // Tam URL'yi oluştur
       String loginUrl =
           "${Constants.loginUrl}?email=$mail&title=${Constants.savunmaMailTitle}&icerik=${Constants.savunmaMailText}";
       // API isteğini gerçekleştir
       http.Response response = await http.get(Uri.parse(loginUrl));
-      String responseBody = response.body;
-      print(responseBody);
       try {
         // Başarılı cevabı al ve işle
         if (response.statusCode == 200) {
-          // Veriyi işleme kodları
         } else {
-          // Başarısız durumla ilgili işlemler
+          popUp(context, 'Başarısız', '$mail adresine mail gönderilemedi');
         }
       } catch (e) {
         // Hata durumu işlemleri
       }
     }
+    setState(() {
+      _isLoading = false;
+    });
+    popUp(context, 'Başarılı', 'Savunma Mailler, Gönderildi');
   }
 }
