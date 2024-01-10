@@ -23,7 +23,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   final AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
   final GlobalKey _qrKey = GlobalKey(debugLabel: 'QR');
   late QRViewController _controller;
-  late String _result = 'Scanning for QR';
+  late String _result = 'QR KOD BEKLENIYOR...';
   bool isProcessing = false;
   Map<String, dynamic> entryList = {'users': []};
 
@@ -48,7 +48,11 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
           ),
           Positioned(
             bottom: 20.0,
-            child: Text(_result),
+            child: Text(
+              _result,
+              style: const TextStyle(fontSize: 30.0),
+              selectionColor: Colors.green,
+            ),
           ),
         ],
       ),
@@ -100,10 +104,11 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     String date =
         "${now.day.toString().padLeft(2, '0')}.${now.month.toString().padLeft(2, '0')}.${now.year.toString()}";
     if (widget.action == "yemek") {
-      Map data = {
+      Map<String, dynamic> data = {
         'time': time,
       };
-      StoreService.setData(path: 'yemek/$date}', data: data);
+      StoreService.setData(path: 'yemek/$date', data: data);
+      return;
     }
 
     bool isExist = false;
