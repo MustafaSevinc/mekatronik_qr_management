@@ -5,6 +5,7 @@ class Constants {
   static const userPassword = "upassword";
   static const localResultsKey = 'localResults';
   static const soundFilePath = "assets/sounds/beep.mp3";
+  static const deniedSoundFilePath = "assets/sounds/nope.mp3";
   static const puantajFilePath = "assets/tables/puantaj.xlsx";
   static const excelFileName = "Excel Ciktisi";
   static const logo = 'assets/images/mekatroniklogo.png';

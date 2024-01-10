@@ -5,14 +5,14 @@ import 'package:mekatronik_qr_management/utils/custom_colors.dart';
 import 'package:mekatronik_qr_management/widgets/custom_icon_button.dart';
 import 'package:mekatronik_qr_management/widgets/popup.dart';
 
-class ExortXlsxScreen extends StatefulWidget {
-  const ExortXlsxScreen({super.key});
+class ExportMainScreen extends StatefulWidget {
+  const ExportMainScreen({super.key});
 
   @override
   _ExortXlsxScreenState createState() => _ExortXlsxScreenState();
 }
 
-class _ExortXlsxScreenState extends State<ExortXlsxScreen> {
+class _ExortXlsxScreenState extends State<ExportMainScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _controller = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -35,7 +35,7 @@ class _ExortXlsxScreenState extends State<ExortXlsxScreen> {
                 onPressed: _onExportPressed,
                 iconData: Icons.download,
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               CustomIconButton(
                 text: 'QR Codes',
                 onPressed: _onQRPressed,
@@ -112,7 +112,7 @@ class _ExortXlsxScreenState extends State<ExortXlsxScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const ExportQRScreen(),
+        builder: (context) => ExportQRScreen(),
       ),
     );
   }

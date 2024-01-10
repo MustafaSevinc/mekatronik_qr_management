@@ -117,8 +117,13 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
             widget.action == 'cikis') {
           entry['cikis'].add(time);
         } else {
+          assetsAudioPlayer.open(
+            Audio(Constants.deniedSoundFilePath),
+            autoStart: true,
+          );
           popUp(context, "Giriş Çıkış Uyuşmazlığı",
               "${entry['cikis'].length} Kez Çıkış, ${entry['giris'].length} Kez Giriş Yapılmış");
+          return;
         }
       }
     }
@@ -129,6 +134,10 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         'cikis': [],
       });
     } else if (!isExist && widget.action == 'cikis') {
+      assetsAudioPlayer.open(
+        Audio(Constants.deniedSoundFilePath),
+        autoStart: true,
+      );
       popUp(context, "Çalışan Giriş Yapmamış", "Önce Giriş Yapınız");
       return;
     }
@@ -181,14 +190,14 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
             as DocumentSnapshot<Map<String, dynamic>>;
     if (!puantajSnapshot.exists) {
       print('Belirtilen tarih için doküman bulunamadı.');
-      return; // ya da uygun bir hata işleme mekanizması kullanabilirsiniz.
+      return;
     }
 
     var data = puantajSnapshot.data() as Map<String, dynamic>;
 
     if (!data.containsKey('users')) {
       print('Doküman verisi eksik veya yanlış.');
-      return; // ya da uygun bir hata işleme mekanizması kullanabilirsiniz.
+      return;
     }
 
     List<dynamic> usersArray = (data['users'] as List<dynamic>);
