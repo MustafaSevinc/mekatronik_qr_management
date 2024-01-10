@@ -72,30 +72,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 fit: BoxFit.fitWidth,
                 height: 150.0,
               ),
-              SizedBox(height: 80.0),
+              const SizedBox(height: 80.0),
               TextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Kullanıcı Adı',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Şifre',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               CustomElevatedButton(
                 onPressed: () => _login(context),
                 buttonText: 'Giriş Yap',
                 child: _isLoggingIn ? const CircularProgressIndicator() : null,
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
             ],
           ),
         ),

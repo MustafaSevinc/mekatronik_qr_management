@@ -7,7 +7,7 @@ class CustomIconButton extends StatelessWidget {
   final Gradient gradient; // Add gradient property
   final Color textColor;
 
-  CustomIconButton({
+  const CustomIconButton({super.key, 
     required this.text,
     required this.onPressed,
     required this.iconData,

@@ -1,17 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mekatronik_qr_management/services/auth_service.dart';
-import 'package:mekatronik_qr_management/services/shared_pref.dart';
-import 'package:mekatronik_qr_management/services/store_service.dart';
-import 'package:mekatronik_qr_management/utils/constants.dart';
+import 'package:mekatronik_qr_management/screens/admin_screens/export_screens/export_qr.dart';
 import 'package:mekatronik_qr_management/utils/custom_colors.dart';
 import 'package:mekatronik_qr_management/widgets/custom_icon_button.dart';
 import 'package:mekatronik_qr_management/widgets/popup.dart';
-import '../../../widgets/custom_elevated_button.dart';
-import 'package:excel/excel.dart';
 
 class ExortXlsxScreen extends StatefulWidget {
-  const ExortXlsxScreen({Key? key}) : super(key: key);
+  const ExortXlsxScreen({super.key});
 
   @override
   _ExortXlsxScreenState createState() => _ExortXlsxScreenState();
@@ -23,7 +18,7 @@ class _ExortXlsxScreenState extends State<ExortXlsxScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
-  bool _isProcessing = false;
+  final bool _isProcessing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +33,12 @@ class _ExortXlsxScreenState extends State<ExortXlsxScreen> {
               CustomIconButton(
                 text: 'Export',
                 onPressed: _onExportPressed,
+                iconData: Icons.download,
+              ),
+              const SizedBox(height: 40),
+              CustomIconButton(
+                text: 'QR Codes',
+                onPressed: _onQRPressed,
                 iconData: Icons.download,
               ),
             ]),
@@ -106,4 +107,13 @@ class _ExortXlsxScreenState extends State<ExortXlsxScreen> {
     }
   }
 */
+
+  void _onQRPressed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ExportQRScreen(),
+      ),
+    );
+  }
 }

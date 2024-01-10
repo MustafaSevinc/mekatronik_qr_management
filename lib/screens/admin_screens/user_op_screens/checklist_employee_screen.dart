@@ -7,8 +7,7 @@ import 'package:mekatronik_qr_management/utils/custom_colors.dart';
 import 'package:mekatronik_qr_management/widgets/popup.dart';
 
 class ChecklistEmployee extends StatefulWidget {
-  const ChecklistEmployee({Key? key})
-      : super(key: key); // Fixed the constructor
+  const ChecklistEmployee({super.key}); // Fixed the constructor
 
   @override
   State<ChecklistEmployee> createState() => _ChecklistEmployeeState();
