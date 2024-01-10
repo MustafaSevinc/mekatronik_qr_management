@@ -60,43 +60,47 @@ class _LoginScreenState extends State<LoginScreen> {
   Scaffold _buildLoginScreen(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.textButtonColor,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Image.asset(
-                Constants.logo,
-                fit: BoxFit.fitWidth,
-                height: 150.0,
-              ),
-              const SizedBox(height: 80.0),
-              TextFormField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Kullanıcı Adı',
-                  border: OutlineInputBorder(),
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.asset(
+                  Constants.logo,
+                  fit: BoxFit.fitWidth,
+                  height: 150.0,
                 ),
-              ),
-              const SizedBox(height: 20.0),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Şifre',
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 80.0),
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Kullanıcı Adı',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 20.0),
-              CustomElevatedButton(
-                onPressed: () => _login(context),
-                buttonText: 'Giriş Yap',
-                child: _isLoggingIn ? const CircularProgressIndicator() : null,
-              ),
-              const SizedBox(height: 20.0),
-            ],
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Şifre',
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20.0),
+                CustomElevatedButton(
+                  onPressed: () => _login(context),
+                  buttonText: 'Giriş Yap',
+                  child:
+                      _isLoggingIn ? const CircularProgressIndicator() : null,
+                ),
+                const SizedBox(height: 20.0),
+              ],
+            ),
           ),
         ),
       ),
