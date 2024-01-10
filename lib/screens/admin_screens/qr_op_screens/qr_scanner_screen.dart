@@ -122,10 +122,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
             widget.action == 'cikis') {
           entry['cikis'].add(time);
         } else {
-          assetsAudioPlayer.open(
-            Audio(Constants.deniedSoundFilePath),
-            autoStart: true,
-          );
           popUp(context, "Giriş Çıkış Uyuşmazlığı",
               "${entry['cikis'].length} Kez Çıkış, ${entry['giris'].length} Kez Giriş Yapılmış");
           return;
@@ -139,10 +135,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         'cikis': [],
       });
     } else if (!isExist && widget.action == 'cikis') {
-      assetsAudioPlayer.open(
-        Audio(Constants.deniedSoundFilePath),
-        autoStart: true,
-      );
       popUp(context, "Çalışan Giriş Yapmamış", "Önce Giriş Yapınız");
       return;
     }
