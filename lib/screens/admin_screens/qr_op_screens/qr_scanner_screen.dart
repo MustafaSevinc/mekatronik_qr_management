@@ -50,7 +50,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
             bottom: 20.0,
             child: Text(
               _result,
-              style: const TextStyle(fontSize: 30.0),
+              style: const TextStyle(fontSize: 20.0),
               selectionColor: Colors.green,
             ),
           ),
@@ -83,6 +83,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     Future.delayed(Constants.qrReadDelay, () {
       setState(() {
         isProcessing = false;
+        _result = 'QR KOD BEKLENIYOR...';
       });
     });
 
